@@ -1,0 +1,93 @@
+﻿@using System.Data
+@model DataTable
+@{
+    ViewData["Title"] = "Root";
+}
+
+<h1>Root</h1>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form method="post">
+    <div class="mb-3">
+        <button type="submit" asp-action="CreateDatabase" asp-controller="AppDev" class="btn btn-primary me-3">Create Database</button>
+        <button type="submit" asp-action="DropDatabase" asp-controller="AppDev" class="btn btn-primary me-3">Drop Database</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="CreatePrepareTablesProcedure" asp-controller="AppDev" class="btn btn-primary me-3">Create PrepareTables Procedure</button>
+        <button type="submit" asp-action="PrepareTables" asp-controller="AppDev" class="btn btn-primary">Call PrepareTables Procedure</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="CreateTriggers" asp-controller="AppDev" class="btn btn-primary">Create Triggers</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="CreatePrepareRolesProcedure" asp-controller="AppDev" class="btn btn-primary me-3">Create PrepareRoles Procedure</button>
+        <button type="submit" asp-action="PrepareRoles" asp-controller="AppDev" class="btn btn-primary">Call PrepareRoles Procedure</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="CreateCreateCustomerProcedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create CreateCustomer Procedure</button>
+        <button type="submit" asp-action="CreateCreateTAProcedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create CreateTA Procedure</button>
+        <button type="submit" asp-action="CreateGetUserDetailsProcedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create GetUserDetails Procedure</button>
+        <button type="submit" asp-action="CreateGetUserDetails2Procedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create GetUserDetails2 Procedure</button>
+        <button type="submit" asp-action="CreateUpdateCustomerProcedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create UpdateCustomer Procedure</button>
+        <button type="submit" asp-action="CreateUpdateTravelAgentProcedure" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Create UpdateTravelAgent Procedure</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="CreateViews" asp-controller="AppDev" class="btn btn-primary">Create Views</button>
+    </div>
+    <br />
+
+    <div class="mb-3">
+        <button type="submit" asp-action="SelectUsers" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Users</button>
+        <button type="submit" asp-action="SelectCustomers" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Customers</button>
+        <button type="submit" asp-action="SelectTravelAgents" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Travel Agents</button>
+        <button type="submit" asp-action="SelectHotels" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Hotels</button>
+        <button type="submit" asp-action="SelectFlights" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Flights</button>
+        <button type="submit" asp-action="SelectTours" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Tours</button>
+        <button type="submit" asp-action="SelectUsersPreferences" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Users Preferences</button>
+        <button type="submit" asp-action="SelectToursWithDetails" asp-controller="AppDev" class="btn btn-primary me-3 mb-3">Select Tours With Details</button>
+        <button type="submit" asp-action="SelectCustomerTourBuy" asp-controller="AppDev" class="btn btn-primary mb-3">Select Buy Relation (Customer-Tour)</button>
+    </div>
+    <br />
+    @if (Model != null && Model != null)
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    @foreach (DataColumn item in Model.Columns)
+                    {
+                        <th>@item.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DataRow item in Model.Rows)
+                {
+                    <tr>
+                        @foreach (object? item2 in item.ItemArray)
+                        {
+                            <td>@(item2 ?? "")</td>
+                        }
+                    </tr>
+                }
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+    }
+</form>

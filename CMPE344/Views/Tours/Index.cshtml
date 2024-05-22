@@ -1,0 +1,88 @@
+﻿@model IEnumerable<CMPE344.Models.Tour>
+@{
+    ViewData["Title"] = "Tours";
+}
+
+<h1>Tours</h1>
+
+@if (User.IsInRole("Travel Agent"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RemainingQuota) / @Html.DisplayNameFor(model => model.Capacity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDateString)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDateString)
+                    </td>
+                    <td>
+                        <span class="@((1 - (double)item.Applied / item.Capacity) > 0.1 ? "text-success" : (item.Capacity > item.Applied ? "text-warning" : "text-danger"))">@Html.DisplayFor(modelItem => item.RemainingQuota)</span> / @Html.DisplayFor(modelItem => item.Capacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)$
+                    </td>
+                    <td>
+                        @if (User.IsInRole("Travel Agent"))
+                        {
+                            <span>
+                                <a asp-action="Edit" asp-route-id="@item.TourId">Edit</a> |
+                            </span>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.TourId">Details</a>
+                        @if (User.IsInRole("Travel Agent"))
+                        {
+                            <span>
+                                |
+                                <a asp-action="Delete" asp-route-id="@item.TourId">Delete</a>
+                            </span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>There is nothing to show here <span>YET!</span></h4>
+    <p>Please wait until some Travel Agents to create some tours for you</p>
+}

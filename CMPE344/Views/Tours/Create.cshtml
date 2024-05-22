@@ -1,0 +1,112 @@
+﻿@model CMPE344.ViewModels.Tours.TourViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Tour</h1>
+
+<hr />
+<div class="container">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row mb-3">
+            <fieldset class="col">
+                <legend>Tour</legend>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Title" class="form-control" placeholder="Tour title" />
+                    <label asp-for="@Model.Title" class="control-label"></label>
+                    <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Description" class="form-control" placeholder="Tour description" />
+                    <label asp-for="@Model.Description" class="control-label"></label>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.StartDate" class="form-control" placeholder="Tour start date" />
+                    <label asp-for="@Model.StartDate" class="control-label"></label>
+                    <span asp-validation-for="@Model.StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.EndDate" class="form-control" placeholder="Tour end date" />
+                    <label asp-for="@Model.EndDate" class="control-label"></label>
+                    <span asp-validation-for="@Model.EndDate" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Capacity" class="form-control" placeholder="Tour capacity" value="0" min="0" />
+                    <label asp-for="@Model.Capacity" class="control-label"></label>
+                    <span asp-validation-for="@Model.Capacity" class="text-danger"></span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                    <div class="form-floating">
+                        <input asp-for="@Model.Price" type="number" step="0.1" class="form-control" placeholder="Tour description" value="0" min="0" />
+                        <label asp-for="@Model.Price" class="control-label"></label>
+                        <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="col">
+                <legend>Hotel</legend>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.HotelName" class="form-control" placeholder="Hotel name" />
+                    <label asp-for="@Model.HotelName" class="control-label"></label>
+                    <span asp-validation-for="@Model.HotelName" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Location" class="form-control" placeholder="Hotel location" />
+                    <label asp-for="@Model.Location" class="control-label"></label>
+                    <span asp-validation-for="@Model.Location" class="text-danger"></span>
+                </div>
+            </fieldset>
+
+            <fieldset class="col">
+                <legend>Flight</legend>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Origin" class="form-control" placeholder="Flight origin" />
+                    <label asp-for="@Model.Origin" class="control-label"></label>
+                    <span asp-validation-for="@Model.Origin" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Destination" class="form-control" placeholder="Flight destination" />
+                    <label asp-for="@Model.Destination" class="control-label"></label>
+                    <span asp-validation-for="@Model.Destination" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.Airline" class="form-control" placeholder="Flight airline" />
+                    <label asp-for="@Model.Airline" class="control-label"></label>
+                    <span asp-validation-for="@Model.Airline" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="@Model.DepartureTime" class="form-control" placeholder="Flight departure time" />
+                    <label asp-for="@Model.DepartureTime" class="control-label"></label>
+                    <span asp-validation-for="@Model.DepartureTime" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.ArrivalTime" class="form-control" placeholder="Flight arrival time" />
+                    <label asp-for="@Model.ArrivalTime" class="control-label"></label>
+                    <span asp-validation-for="@Model.ArrivalTime" class="text-danger"></span>
+                </div>
+            </fieldset>
+        </div>
+
+        <input type="submit" value="Create" class="w-100 btn btn-lg btn-primary" />
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Tours</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+}

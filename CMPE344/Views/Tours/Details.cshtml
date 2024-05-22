@@ -1,0 +1,177 @@
+﻿@model (CMPE344.ViewModels.Tours.TourViewModel vm, bool AlreadyBuy)
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmModalLabel">Are You Sure?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to buy this tour?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmit">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h4>Tour</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Title)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Title)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Description)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Description)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.StartDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.StartDateString)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.EndDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.EndDateString)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Capacity)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Capacity)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Price)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Price)$
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col">
+            <h4>Hotel</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.HotelName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.HotelName)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Location)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Location)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col">
+            <h4>Flight</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Origin)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Origin)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Destination)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Destination)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.Airline)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.Airline)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.DepartureTime)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.DepartureTimeString)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.vm.ArrivalTime)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.vm.ArrivalTimeString)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Buy" asp-antiforgery="true" id="buyTourForm">
+        @if (User.IsInRole("Customer"))
+        {
+            <input type="hidden" name="TourId" value="@Model.vm.TourId" />
+            <input type="hidden" name="AlreadyBuy" value="@Model.AlreadyBuy.ToString()" />
+            @if (Model.AlreadyBuy)
+            {
+                <input type="submit" value="Return" class="w-100 btn btn-lg btn-primary" id="buyTourSubmit" />
+            }
+            else
+            {
+                <input type="submit" value="@(Model.vm.RemainingQuota == 0 ? "FULL" : "Buy")" class="w-100 btn btn-lg btn-primary" id="buyTourSubmit" @(Model.vm.RemainingQuota == 0 ? "disabled" : "") />
+            }
+        }
+        else
+        {
+            <span><a asp-action="Edit" asp-route-id="@Model.vm.TourId">Edit</a> |</span>
+        }
+    </form>
+
+    <a asp-action="Index">Back to Tours</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the form and the submit button
+            const form = document.getElementById('buyTourForm');
+            const submitButton = document.getElementById('buyTourSubmit');
+
+            // Add event listener to the submit button
+            submitButton.addEventListener('click', function (event) {
+                // Prevent the default form submission
+                event.preventDefault();
+                // Show the confirmation modal
+                $('#confirmModal').modal('show');
+            });
+
+            // Add event listener to the confirmation modal's submit button
+            document.getElementById('confirmSubmit').addEventListener('click', function () {
+                // Submit the form
+                form.submit();
+            });
+        });
+    </script>
+}
